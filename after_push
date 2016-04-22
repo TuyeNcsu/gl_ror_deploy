@@ -1,0 +1,31 @@
+#!/bin/sh
+. ~/.profile
+
+# chruby configuration
+if [ -n "$BASH_VERSION" ] || [ -n "$ZSH_VERSION" ]; then
+  . $HOME/share/chruby/chruby.sh
+  . $HOME/share/chruby/auto.sh
+fi
+
+if [ -f ~/perl5/perlbrew/etc/bashrc ]; then
+        SHELL=/bin/bash . ~/perl5/perlbrew/etc/bashrc
+fi
+
+[ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"  # This loads nvm
+
+oldrev=$1
+newrev=$2
+branch=$3
+
+run() {
+  [ -x $1 ] && $1 $oldrev $newrev $branch
+}
+
+echo "Passing control to ${target_path}deploy/before_restart.rb in $(pwd)"
+run "${target_path}deploy/before_restart.rb"
+
+echo "Passing control to ${target_path}deploy/restart in $(pwd)"
+run  "${target_path}deploy/restart"
+
+# run deploy/restart && run deploy/after_restart
+

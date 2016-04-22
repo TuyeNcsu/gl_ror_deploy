@@ -1,0 +1,5 @@
+#!/bin/sh
+touch "tmp/restart.txt"
+chmod 0664 "tmp/restart.txt"
+
+echo -e "\e[0;33mRestarting Passenger...\e[0;39m"
